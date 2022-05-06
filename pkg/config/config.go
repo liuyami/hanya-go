@@ -15,7 +15,7 @@ var viper *viperlib.Viper
 // ConfigFunc 动态加载配置信息
 type ConfigFunc func() map[string]interface{}
 
-// ConfigFuncs 先加载到此数组，loadConfig 再动态生成配置信息
+// ConfigFuncs  先加载到此数组，loadConfig 再动态生成配置信息
 var ConfigFuncs map[string]ConfigFunc
 
 func init() {
