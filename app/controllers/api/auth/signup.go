@@ -4,12 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"hanya-go/app/models/user"
 	"hanya-go/app/requests"
-	"net/http"
+	"hanya-go/app/response"
 )
 
 //type Signup struct {
 //	api.BaseAPI
 //}
+
+type isResult struct {
+	Exist bool `json:"exist"`
+}
 
 func IsPhoneExist(c *gin.Context) {
 
@@ -19,8 +23,8 @@ func IsPhoneExist(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"exist": user.IsPhoneExist(request.Phone),
+	response.Success(c, isResult{
+		Exist: user.IsPhoneExist(request.Phone),
 	})
 }
 
@@ -33,7 +37,7 @@ func IsEmailExist(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"exist": user.IsEmailExist(request.Email),
+	response.Success(c, isResult{
+		Exist: user.IsPhoneExist(request.Email),
 	})
 }
