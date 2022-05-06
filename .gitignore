@@ -1,8 +1,9 @@
-# IntelliJ project files
+.vscode
 .idea
 *.iml
 out
 gen
+
 ### Go template
 # Binaries for programs and plugins
 *.exe
