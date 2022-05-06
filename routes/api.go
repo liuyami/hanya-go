@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"hanya-go/app/controllers/api/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,13 +9,21 @@ import (
 
 func RegisterAPIRoutes(r *gin.Engine) {
 
-	v1 := r.Group("/v1")
+	root := r.Group("/api")
 	{
-		v1.GET("/", func(ctx *gin.Context) {
+		root.GET("/", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{
-				"hello": "world",
+				"status": "ok",
 			})
 		})
+
+		userAuthGroup := root.Group("/auth")
+		{
+			//suc := new(auth.Signup)
+
+			userAuthGroup.POST("/signup/phone/exist", auth.IsPhoneExist)
+			userAuthGroup.POST("/signup/email/exist", auth.IsEmailExist)
+		}
 	}
 
 }

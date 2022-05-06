@@ -6,6 +6,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"hanya-go/app/models/user"
 	"hanya-go/pkg/config"
 	"hanya-go/pkg/database"
 	"time"
@@ -42,4 +43,7 @@ func SetupDB() {
 	database.SQLDB.SetMaxIdleConns(config.GetInt("database.mysql.max_idle_connections"))
 	// 设置每个链接的过期时间
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
+
+	// 数据库结构迁移
+	database.DB.AutoMigrate(&user.User{})
 }
