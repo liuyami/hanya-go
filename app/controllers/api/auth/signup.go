@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"hanya-go/app/models/user"
 	"hanya-go/app/requests"
@@ -16,24 +15,7 @@ func IsPhoneExist(c *gin.Context) {
 
 	request := requests.SignUpPhoneExistRequest{}
 
-	// 解析请求
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-
-		fmt.Println(err.Error())
-
-		return
-	}
-
-	// 验证
-	errs := requests.ValidateSignUpPhoneExist(&request, c)
-	if len(errs) > 0 {
-		// 验证失败，返回 422 状态码和错误信息
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": errs,
-		})
+	if ok := requests.Validate(c, &request, requests.SignUpPhoneExist); !ok {
 		return
 	}
 
@@ -44,26 +26,10 @@ func IsPhoneExist(c *gin.Context) {
 
 func IsEmailExist(c *gin.Context) {
 
+	// 获取请求参数，并做表单验证
 	request := requests.SignupEmailExistRequest{}
 
-	// 解析请求
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-
-		fmt.Println(err.Error())
-
-		return
-	}
-
-	// 验证
-	errs := requests.ValidateSignupEmailExist(&request, c)
-	if len(errs) > 0 {
-		// 验证失败，返回 422 状态码和错误信息
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": errs,
-		})
+	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
 		return
 	}
 
