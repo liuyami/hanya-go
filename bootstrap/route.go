@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strings"
 
+	"hanya-go/routes"
+
 	"github.com/gin-gonic/gin"
-	"github.com/liuyami/hanya-go/routes"
 )
 
 func SetRoute(router *gin.Engine) {
