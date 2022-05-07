@@ -11,10 +11,6 @@ import (
 //	api.BaseAPI
 //}
 
-type isResult struct {
-	Exist bool `json:"exist"`
-}
-
 func IsPhoneExist(c *gin.Context) {
 
 	request := requests.SignUpPhoneExistRequest{}
@@ -23,8 +19,8 @@ func IsPhoneExist(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, isResult{
-		Exist: user.IsPhoneExist(request.Phone),
+	response.Success(c, gin.H{
+		"exist": user.IsPhoneExist(request.Phone),
 	})
 }
 
@@ -37,7 +33,7 @@ func IsEmailExist(c *gin.Context) {
 		return
 	}
 
-	response.Success(c, isResult{
-		Exist: user.IsPhoneExist(request.Email),
+	response.Success(c, gin.H{
+		"exist": user.IsEmailExist(request.Email),
 	})
 }
