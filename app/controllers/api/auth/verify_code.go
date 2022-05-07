@@ -13,16 +13,6 @@ func GetCaptcha(c *gin.Context) {
 
 	logger.LogIf(err)
 
-	type resp struct {
-		captchaId     string `json:"captcha_id"`
-		captchaBase64 string `json:"captcha_base64"`
-	}
-
-	//c.JSON(http.StatusOK, gin.H{
-	//	"captcha_id":    id,
-	//	"captcha_image": base64,
-	//})
-
 	response.Success(c, gin.H{
 		"captcha_id":    id,
 		"captcha_image": base64,

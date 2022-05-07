@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"hanya-go/pkg/captcha"
+	"hanya-go/pkg/logger"
 
 	"hanya-go/bootstrap"
 	btsConfig "hanya-go/config"
@@ -41,6 +43,9 @@ func main() {
 
 	// 初始化路由
 	bootstrap.SetRoute(router)
+
+	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "6291"), "正确的答案")
+	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "1234"), "错误的答案")
 
 	err := router.Run(":" + config.Get("app.port"))
 	if err != nil {

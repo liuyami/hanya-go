@@ -11,7 +11,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 	root := r.Group("/api")
 	{
-		root.GET("/", func(ctx *gin.Context) {
+		root.GET("/ping", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{
 				"status": "ok",
 			})

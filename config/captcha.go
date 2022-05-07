@@ -13,7 +13,7 @@ func init() {
 			"width": 240,
 
 			// 验证码的长度
-			"length": 6,
+			"length": 4,
 
 			// 数字的最大倾斜角度
 			"maxskew": 0.7,
@@ -22,7 +22,7 @@ func init() {
 			"dotcount": 80,
 
 			// 过期时间，单位是分钟
-			"expire_time": 15,
+			"expire_time": 5,
 
 			// debug 模式下的过期时间，方便本地开发调试
 			"debug_expire_time": 10080,
