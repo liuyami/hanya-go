@@ -22,9 +22,15 @@ func main() {
 	flag.Parse()
 	config.InitConfig(env)
 
+	// 初始化日志
+	bootstrap.SetupLogger()
+
 	router := gin.New()
 
+	// 初始化数据库
 	bootstrap.SetupDB()
+
+	// 初始化路由
 	bootstrap.SetRoute(router)
 
 	err := router.Run(":" + config.Get("app.port"))
