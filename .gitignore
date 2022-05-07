@@ -23,6 +23,7 @@ _cgo_export.*
 *.class
 *.dll
 *.exe
+!air.exe
 *.o
 *.so
 
