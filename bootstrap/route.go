@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"hanya-go/app/middlewares"
 	"net/http"
 	"strings"
 
@@ -24,7 +25,7 @@ func SetRoute(router *gin.Engine) {
 // 注册全局中间件
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
-		gin.Logger(),
+		middlewares.Logger(),
 		gin.Recovery(),
 	)
 }
