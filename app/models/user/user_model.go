@@ -3,12 +3,12 @@ package user
 import "hanya-go/app/models"
 
 type User struct {
-	models.BaseModel
+	models.ID
 
 	Name     string `json:"name,omitempty"`
-	Email    string `json:"uniqueIndex,-"`
-	Phone    string `json:"uniqueIndex,-"`
+	Email    string `gorm:"uniqueIndex" json:"-"`
+	Phone    string `gorm:"uniqueIndex" json:"-"`
 	Password string `json:"-"`
 
-	models.CommonTimestampsField
+	models.Datetime
 }
