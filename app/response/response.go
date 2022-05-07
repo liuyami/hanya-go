@@ -20,7 +20,6 @@ func Success(c *gin.Context, data interface{}) {
 }
 
 func Fail(c *gin.Context, errorCode int, msg interface{}, data interface{}) {
-	c.Abort()
 	c.JSON(http.StatusOK, Response{
 		ErrCode: errorCode,
 		ErrMsg:  msg,
@@ -29,7 +28,7 @@ func Fail(c *gin.Context, errorCode int, msg interface{}, data interface{}) {
 }
 
 func App(c *gin.Context, statusCode int, msg string) {
-	c.JSON(statusCode, Response{
+	c.AbortWithStatusJSON(statusCode, Response{
 		ErrCode: statusCode,
 		ErrMsg:  msg,
 		Data:    nil,

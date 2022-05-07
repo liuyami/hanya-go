@@ -3,14 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"hanya-go/pkg/captcha"
-	"hanya-go/pkg/logger"
-
+	"github.com/gin-gonic/gin"
 	"hanya-go/bootstrap"
 	btsConfig "hanya-go/config"
 	"hanya-go/pkg/config"
-
-	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -44,8 +40,13 @@ func main() {
 	// 初始化路由
 	bootstrap.SetRoute(router)
 
-	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "6291"), "正确的答案")
-	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "1234"), "错误的答案")
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "6291"), "正确的答案")
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("hCyFVozJt7Djt6vStbYz", "1234"), "错误的答案")
+
+	//sms.NewSMS().Send("18107397886", sms.Message{
+	//	Template: config.GetString("sms.aliyun.template_code"),
+	//	Data:     map[string]string{"code": "1234"},
+	//})
 
 	err := router.Run(":" + config.Get("app.port"))
 	if err != nil {
