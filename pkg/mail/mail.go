@@ -2,22 +2,20 @@ package mail
 
 import (
 	"hanya-go/pkg/config"
+	"hanya-go/pkg/logger"
 	"sync"
 )
 
-type From struct {
-	Address string
-	Name    string
-}
-
 type Email struct {
-	From    From
-	To      []string
-	Bcc     []string
-	Cc      []string
-	Subject string
-	Text    []byte
-	HTML    []byte
+	FromAddress string
+	FromName    string
+	To          []string
+	Bcc         []string
+	Cc          []string
+	Subject     string
+	Text        []byte
+	HTML        []byte
+	Tls         bool
 }
 
 type Mailer struct {
@@ -26,31 +24,35 @@ type Mailer struct {
 
 var once sync.Once
 var internalMailer *Mailer
-
-var mode string = config.GetString("sms.default")
+var mode string
 
 func NewMailer() *Mailer {
 	once.Do(func() {
+		mode = config.Get("mail.default")
 
 		if mode == "smtp" {
 			internalMailer = &Mailer{
 				Driver: &SMTP{},
 			}
 		} else if mode == "sendcloud" {
-			// TODO SENDCLOUD
+			internalMailer = &Mailer{
+				Driver: &SENDCLOUD{},
+			}
 		}
 	})
 	return internalMailer
 }
 
 func (mailer *Mailer) Send(email Email) bool {
+
+	logger.DebugString("mail/mail.go 47", "mode", mode)
+
 	if mode == "smtp" {
+		logger.DebugString("mail/mail.go 47", "stmp", mode)
 		return mailer.Driver.Send(email, config.GetStringMapString("mail.smtp"))
 	} else if mode == "sendcloud" {
-		// TODO SENDCLOUD
+		return mailer.Driver.Send(email, config.GetStringMapString("mail.sendcloud"))
 	} else {
 		return false
 	}
-
-	return false
 }

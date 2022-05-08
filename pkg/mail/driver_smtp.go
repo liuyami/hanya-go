@@ -1,6 +1,7 @@
 package mail
 
 import (
+	"crypto/tls"
 	"fmt"
 	emailPKG "github.com/jordan-wright/email"
 	"hanya-go/pkg/logger"
@@ -14,7 +15,9 @@ type SMTP struct{}
 func (s *SMTP) Send(email Email, config map[string]string) bool {
 	e := emailPKG.NewEmail()
 
-	e.From = fmt.Sprintf("%v <%v>", email.From.Name, email.From.Address)
+	logger.DebugJSON("SMTP发送邮件", "EMAIL对象原始信息", email)
+
+	e.From = fmt.Sprintf("%v <%v>", email.FromName, email.FromAddress)
 	e.To = email.To
 	e.Bcc = email.Bcc
 	e.Cc = email.Cc
@@ -24,19 +27,37 @@ func (s *SMTP) Send(email Email, config map[string]string) bool {
 
 	logger.DebugJSON("SMTP发送邮件", "发件详情", e)
 
-	err := e.Send(
-		fmt.Sprintf("%v:%v", config["host"], config["port"]),
+	var err error
+	// 判断是否需要用TLS连接
+	if email.Tls {
+		err = e.SendWithTLS(
+			fmt.Sprintf("%v:%v", config["host"], config["port"]),
 
-		smtp.PlainAuth(
-			"",
-			config["username"],
-			config["password"],
-			config["host"],
-		),
-	)
+			smtp.PlainAuth(
+				"",
+				config["username"],
+				config["password"],
+				config["host"],
+			),
+			&tls.Config{
+				ServerName: config["host"],
+			},
+		)
+	} else {
+		err = e.Send(
+			fmt.Sprintf("%v:%v", config["host"], config["port"]),
+
+			smtp.PlainAuth(
+				"",
+				config["username"],
+				config["password"],
+				config["host"],
+			),
+		)
+	}
 
 	if err != nil {
-		logger.ErrorString("SMTP发送邮件", "发送失败", err.Error())
+		logger.ErrorString("SMTP发送邮件", "发送出错", err.Error())
 		return false
 	}
 

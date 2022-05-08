@@ -24,12 +24,12 @@ var once sync.Once
 // internalSMS 内部使用的 SMS 对象
 var internalSMS *SMS
 
-var mode string = config.GetString("sms.default")
+var mode string
 
 // NewSMS 单例模式获取
 func NewSMS() *SMS {
 	once.Do(func() {
-
+		mode = config.GetString("sms.default")
 		if mode == "aliyun" {
 			internalSMS = &SMS{
 				Driver: &Aliyun{},

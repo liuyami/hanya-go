@@ -24,7 +24,7 @@ func GetCaptcha(c *gin.Context) {
 // SendUsingPhone 发送手机验证码
 func SendUsingPhone(c *gin.Context) {
 
-	// 验证表单
+	// 验证请求
 	request := requests.VerifyCodePhoneRequest{}
 	if ok := requests.Validate(c, &request, requests.VerifyCodePhone); !ok {
 		return
@@ -35,6 +35,25 @@ func SendUsingPhone(c *gin.Context) {
 		response.Fail(c, 500, "发送短信失败", nil)
 	} else {
 		response.Success(c, "发送成功")
+	}
+
+}
+
+func SendUsingEmail(c *gin.Context) {
+
+	// 验证请求
+	request := requests.VerifyCodeEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.VerifyCodeEmail); !ok {
+		return
+	}
+
+	// 发送邮件
+	err := verifycode.NewVerifyCode().SendEmail(request.Email)
+
+	if err != nil {
+		response.Fail(c, 500, "发送失败", err.Error())
+	} else {
+		response.Success(c, "")
 	}
 
 }

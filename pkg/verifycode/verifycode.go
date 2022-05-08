@@ -1,10 +1,12 @@
 package verifycode
 
 import (
+	"fmt"
 	"hanya-go/pkg/app"
 	"hanya-go/pkg/config"
 	"hanya-go/pkg/helpers"
 	"hanya-go/pkg/logger"
+	"hanya-go/pkg/mail"
 	"hanya-go/pkg/redis"
 	"hanya-go/pkg/sms"
 	"strings"
@@ -47,6 +49,49 @@ func (vc *VerifyCode) SendSMS(phone string) bool {
 		Template: config.GetString("sms.aliyun.template_code"),
 		Data:     map[string]string{"code": code},
 	})
+}
+
+func (vc *VerifyCode) SendEmail(email string) error {
+	// 生成验证码
+	code := vc.generateVerifyCode(email)
+
+	// 方便本地和 API 自动测试
+	if !app.IsProduction() && strings.HasPrefix(email, config.GetString("verifycode.debug_email_suffix")) {
+		return nil
+	}
+
+	content := fmt.Sprintf("<h1>您的 Email 验证码是 %v </h1>", code)
+
+	// 发件信息
+	mailMode := config.Get("mail.default")
+	fromAddress := ""
+	fromName := ""
+
+	if mailMode == "smtp" {
+		fromName = config.GetString("mail.smtp.from_name")
+		fromAddress = config.GetString("mail.smtp.from_address")
+	} else if mailMode == "sendcloud" {
+		fromName = config.GetString("mail.sendcloud.from_name")
+		fromAddress = config.GetString("mail.sendcloud.from_address")
+	}
+
+	// 发送邮件
+	res := mail.NewMailer().Send(mail.Email{
+		FromName:    fromName,
+		FromAddress: fromAddress,
+		To:          []string{email},
+		Subject:     "验证码",
+		HTML:        []byte(content),
+		Tls:         config.GetBool("mail.smtp.tls"),
+	})
+
+	if res {
+		logger.DebugString("邮件验证码", "成功", "成功")
+	} else {
+		logger.DebugString("邮件验证码", "失败", "失败")
+	}
+
+	return nil
 }
 
 // generateVerifyCode 生成验证码，并放置于 Redis 中

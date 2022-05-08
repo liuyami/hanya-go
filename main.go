@@ -7,7 +7,6 @@ import (
 	"hanya-go/bootstrap"
 	btsConfig "hanya-go/config"
 	"hanya-go/pkg/config"
-	"hanya-go/pkg/verifycode"
 )
 
 func init() {
@@ -49,10 +48,11 @@ func main() {
 	//	Data:     map[string]string{"code": "1234"},
 	//})
 
-	verifycode.NewVerifyCode().SendSMS("18107397886")
+	// verifycode.NewVerifyCode().SendSMS("18107397886")
 
 	err := router.Run(":" + config.Get("app.port"))
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
 }

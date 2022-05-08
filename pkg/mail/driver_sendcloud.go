@@ -3,6 +3,7 @@ package mail
 import (
 	"fmt"
 	"github.com/imroc/req/v3"
+	sysConfig "hanya-go/pkg/config"
 	"hanya-go/pkg/helpers/str"
 	"hanya-go/pkg/logger"
 )
@@ -22,12 +23,14 @@ type SENDCLOUD struct {
 // Send 实现 email.Driver interface 的 Send 方法
 func (s *SENDCLOUD) Send(email Email, config map[string]string) bool {
 
+	logger.DebugJSON("SENDCLOUD发送邮件", "EMAIL对象原始信息", email)
+
 	var respBody SendcloudResponseBody
 
 	postData := map[string]string{
-		"apiUser": config["apiUser"],
-		"apiKey":  config["apiKey"],
-		"from":    fmt.Sprintf("%v <%v>", email.From.Name, email.From.Address),
+		"apiUser": sysConfig.Get("mail.sendcloud.apiUser"),
+		"apiKey":  sysConfig.Get("mail.sendcloud.apiKey"),
+		"from":    fmt.Sprintf("%v <%v>", email.FromName, email.FromAddress),
 		"to":      str.SliceSplit(email.To, ";"),
 		"subject": email.Subject,
 		"html":    str.ByteToString(email.HTML),
