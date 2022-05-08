@@ -24,17 +24,34 @@ var once sync.Once
 // internalSMS 内部使用的 SMS 对象
 var internalSMS *SMS
 
+var mode string = config.GetString("sms.default")
+
 // NewSMS 单例模式获取
 func NewSMS() *SMS {
 	once.Do(func() {
-		internalSMS = &SMS{
-			Driver: &Aliyun{},
+
+		if mode == "aliyun" {
+			internalSMS = &SMS{
+				Driver: &Aliyun{},
+			}
+		} else if mode == "tencent" {
+			internalSMS = &SMS{
+				Driver: &Tencent{},
+			}
 		}
+
 	})
 
 	return internalSMS
 }
 
 func (sms *SMS) Send(phone string, message Message) bool {
-	return sms.Driver.Send(phone, message, config.GetStringMapString("sms.aliyun"))
+
+	if mode == "aliyun" {
+		return sms.Driver.Send(phone, message, config.GetStringMapString("sms.aliyun"))
+	} else if mode == "tencent" {
+		return sms.Driver.Send(phone, message, config.GetStringMapString("sms.tencent"))
+	} else {
+		return false
+	}
 }
