@@ -2,7 +2,6 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"hanya-go/app/models/user"
 	"hanya-go/app/requests"
 	"hanya-go/app/response"
@@ -49,15 +48,39 @@ func SignupUsingPhone(c *gin.Context) {
 	}
 
 	// 2. 验证成功，创建数据
-	_user := user.User{
+	userModel := user.User{
 		Nickname: request.Nickname,
 		Phone:    request.Phone,
 		Password: request.Password,
 	}
-	_user.Create()
+	userModel.Create()
 
-	if cast.ToUint(_user.ID) > 0 {
-		response.Success(c, _user)
+	if userModel.UserID > 0 {
+		response.Success(c, userModel)
+	} else {
+		response.Fail(c, 10001, "创建用户失败，请稍后尝试~", "")
+	}
+}
+
+// SignupUsingEmail  使用电子邮件进行注册
+func SignupUsingEmail(c *gin.Context) {
+
+	// 1. 验证表单
+	request := requests.SignupUsingEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
+		return
+	}
+
+	// 2. 验证成功，创建数据
+	userModel := user.User{
+		Nickname: request.Nickname,
+		Email:    request.Email,
+		Password: request.Password,
+	}
+	userModel.Create()
+
+	if userModel.UserID > 0 {
+		response.Success(c, userModel)
 	} else {
 		response.Fail(c, 10001, "创建用户失败，请稍后尝试~", "")
 	}

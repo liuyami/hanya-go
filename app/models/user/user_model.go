@@ -6,7 +6,9 @@ import (
 )
 
 type User struct {
-	models.ID
+	// models.ID
+
+	UserID uint `gorm:"column:user_id;primaryKey;autoIncrement;type:int(10)" json:"user_id,omitempty"`
 
 	Nickname string `gorm:"column:nickname;type:varchar(128)" json:"nickname,omitempty"`
 	Avatar   string `gorm:"column:avatar;type:varchar(256)" json:"avatar,omitempty"`

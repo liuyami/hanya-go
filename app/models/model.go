@@ -7,6 +7,6 @@ type ID struct {
 }
 
 type Datetime struct {
-	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime;type:datetime(0)" json:"created_at,omitempty"`
-	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime;type:datetime(0)" json:"updated_at,omitempty"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime;type:datetime(0)" json:"-"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime;type:datetime(0)" json:"-"`
 }

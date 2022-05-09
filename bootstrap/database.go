@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"hanya-go/app/models/user"
 	"hanya-go/pkg/config"
 	"hanya-go/pkg/database"
 	"hanya-go/pkg/logger"
@@ -45,5 +44,5 @@ func SetupDB() {
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
 
 	// 数据库结构迁移
-	database.DB.AutoMigrate(&user.User{})
+	// database.DB.AutoMigrate(&user.User{})
 }
