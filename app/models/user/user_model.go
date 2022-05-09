@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/spf13/cast"
 	"hanya-go/app/models"
 	"hanya-go/pkg/database"
 	"hanya-go/pkg/hash"
@@ -32,4 +33,9 @@ func (userModel *User) Create() {
 
 func (userModel *User) ComparePassword(_password string) bool {
 	return hash.BcryptCheck(userModel.Password, _password)
+}
+
+// GetStringID 获取 User ID 的字符串格式
+func (userModel *User) GetStringID() string {
+	return cast.ToString(userModel.UserID)
 }

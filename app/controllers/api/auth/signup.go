@@ -5,6 +5,7 @@ import (
 	"hanya-go/app/models/user"
 	"hanya-go/app/requests"
 	"hanya-go/app/response"
+	"hanya-go/pkg/jwt"
 )
 
 //type Signup struct {
@@ -56,7 +57,11 @@ func SignupUsingPhone(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.UserID > 0 {
-		response.Success(c, userModel)
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Nickname, userModel.Avatar)
+		response.Success(c, gin.H{
+			"token": token,
+			"info":  userModel,
+		})
 	} else {
 		response.Fail(c, 10001, "创建用户失败，请稍后尝试~", "")
 	}
@@ -80,7 +85,11 @@ func SignupUsingEmail(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.UserID > 0 {
-		response.Success(c, userModel)
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Nickname, userModel.Avatar)
+		response.Success(c, gin.H{
+			"token": token,
+			"info":  userModel,
+		})
 	} else {
 		response.Fail(c, 10001, "创建用户失败，请稍后尝试~", "")
 	}
