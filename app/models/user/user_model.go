@@ -3,6 +3,7 @@ package user
 import (
 	"hanya-go/app/models"
 	"hanya-go/pkg/database"
+	"hanya-go/pkg/hash"
 )
 
 type User struct {
@@ -27,4 +28,8 @@ func (User) TableName() string {
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (userModel *User) Create() {
 	database.DB.Create(&userModel)
+}
+
+func (userModel *User) ComparePassword(_password string) bool {
+	return hash.BcryptCheck(userModel.Password, _password)
 }
