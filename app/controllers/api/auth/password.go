@@ -27,3 +27,21 @@ func ResetPasswordByPhone(c *gin.Context) {
 		response.Success(c, nil)
 	}
 }
+
+func ResetPasswordByEmail(c *gin.Context) {
+	// 1. 验证表单
+	request := requests.ResetByEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.ResetByEmail); !ok {
+		return
+	}
+
+	// 2. 更新密码
+	userModel := user.GetByEmail(request.Email)
+	if userModel.UserID == 0 {
+		response.Fail(c, 1001, "账户异常：不存在或已被禁用", nil)
+	} else {
+		userModel.Password = request.Password
+		userModel.Save()
+		response.Success(c, nil)
+	}
+}
