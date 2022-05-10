@@ -51,3 +51,16 @@ func LoginByPassword(c *gin.Context) {
 		})
 	}
 }
+
+func RefreshToken(c *gin.Context) {
+	token, err := jwt.NewJWT().RefreshToken(c)
+
+	if err != nil {
+		response.Fail(c, 1001, "刷新失败", err)
+	} else {
+		response.Success(c, gin.H{
+			"token": token,
+		})
+	}
+
+}
