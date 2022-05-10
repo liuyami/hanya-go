@@ -34,6 +34,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 			// 扽牢固
 			userAuthGroup.POST("/login/using-phone", auth.LoginByPhone)
+			userAuthGroup.POST("/login/using-password", auth.LoginByPassword)
 		}
 	}
 
