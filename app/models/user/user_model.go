@@ -39,3 +39,37 @@ func (userModel *User) ComparePassword(_password string) bool {
 func (userModel *User) GetStringID() string {
 	return cast.ToString(userModel.UserID)
 }
+
+// GetById 通过邮件地址来获取用户
+func GetById(id string) (userModel User) {
+	database.DB.Where("email = ?", id).First(&userModel)
+	return
+}
+
+// GetByPhone 通过手机号码来获取用户
+func GetByPhone(phone string) (userModel User) {
+	database.DB.Where("phone = ?", phone).First(&userModel)
+	return
+}
+
+// GetByEmail 通过邮件地址来获取用户
+func GetByEmail(email string) (userModel User) {
+	database.DB.Where("email = ?", email).First(&userModel)
+	return
+}
+
+// GetByOpenid 通过邮件地址来获取用户
+func GetByOpenid(openid string) (userModel User) {
+	database.DB.Where("openid = ?", openid).First(&userModel)
+	return
+}
+
+// GetByMulti 通过 手机号/Email/OpenID 来获取用户
+func GetByMulti(loginID string) (userModel User) {
+	database.DB.
+		Where("phone = ?", loginID).
+		Or("email = ?", loginID).
+		Or("openid = ?", loginID).First(&userModel)
+
+	return
+}

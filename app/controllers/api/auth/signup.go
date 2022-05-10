@@ -57,7 +57,7 @@ func SignupUsingPhone(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.UserID > 0 {
-		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Nickname, userModel.Avatar)
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID())
 		response.Success(c, gin.H{
 			"token": token,
 			"info":  userModel,
@@ -85,7 +85,7 @@ func SignupUsingEmail(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.UserID > 0 {
-		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Nickname, userModel.Avatar)
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID())
 		response.Success(c, gin.H{
 			"token": token,
 			"info":  userModel,
