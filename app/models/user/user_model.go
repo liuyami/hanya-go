@@ -41,8 +41,8 @@ func (userModel *User) GetStringID() string {
 }
 
 // GetById 通过邮件地址来获取用户
-func GetById(id string) (userModel User) {
-	database.DB.Where("email = ?", id).First(&userModel)
+func GetById(idStr string) (userModel User) {
+	database.DB.Where("user_id", idStr).First(&userModel)
 	return
 }
 
