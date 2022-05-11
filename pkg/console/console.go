@@ -7,7 +7,7 @@ import (
 )
 
 func Success(msg string) {
-	colorOut("msg", "green")
+	colorOut(msg, "green")
 }
 
 // Error 打印一条报错消息，红色输出
@@ -34,5 +34,5 @@ func ExitIf(err error) {
 }
 
 func colorOut(msg, color string) {
-	fmt.Println(os.Stdout, ansi.Color(msg, color))
+	fmt.Fprintln(os.Stdout, ansi.Color(msg, color))
 }

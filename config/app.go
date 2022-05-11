@@ -18,7 +18,7 @@ func init() {
 			"port": config.Env("APP_PORT", "8000"),
 
 			// 加密会话、JWT 加密
-			"key": config.Env("APP_KEY", "3px46a9dcf9ea060a0a6532b166da32f304af1dd"),
+			"key": config.Env("APP_KEY", "W5unr5NzuTQIfGUWaBbgOndxMoFx7w9N"),
 
 			// 用以生成链接
 			"url": config.Env("APP_URL", "http://127.0.0.1:8000"),
