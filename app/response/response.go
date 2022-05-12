@@ -25,6 +25,7 @@ func Fail(c *gin.Context, errorCode int, msg interface{}, data interface{}) {
 		ErrMsg:  msg,
 		Data:    data,
 	})
+	c.Abort()
 }
 
 func App(c *gin.Context, statusCode int, msg string) {

@@ -3,12 +3,11 @@ package {{PackageName}}
 
 import (
     "hanya-go/app/models"
-    "hanya-go/pkg/logger"
     "hanya-go/pkg/database"
 )
 
 type {{StructName}} struct {
-    models.ID
+    ID uint `gorm:"column:user_id;primaryKey;autoIncrement;type:int(10)" json:"user_id,omitempty"`
 
     // Put fields in here
     // FIXME()

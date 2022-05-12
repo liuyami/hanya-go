@@ -1,0 +1,101 @@
+package v1
+
+import (
+	"hanya-go/app/models/{{PackageName}}"
+	"hanya-go/app/policies"
+	"hanya-go/app/requests"
+	"hanya-go/app/response"
+
+	"github.com/gin-gonic/gin"
+)
+
+
+func Index(c *gin.Context) {
+    {{VariableNamePlural}} := {{PackageName}}.All()
+    response.Success(c, {{VariableNamePlural}})
+}
+
+func Show(c *gin.Context) {
+    {{VariableName}}Model := {{PackageName}}.Get(c.Param("id"))
+    if {{VariableName}}Model.ID == 0 {
+        response.Fail(c, 1001,"记录不存在", nil)
+        return
+    }
+    response.Success(c, {{VariableName}}Model)
+}
+
+func Store(c *gin.Context) {
+
+    request := requests.{{StructName}}Request{}
+    if ok := requests.Validate(c, &request, requests.{{StructName}}Save); !ok {
+        return
+    }
+
+    {{VariableName}}Model := {{PackageName}}.{{StructName}}{
+        FieldName:      request.FieldName,
+    }
+
+    {{VariableName}}Model.Create()
+
+    if {{VariableName}}Model.ID > 0 {
+        response.Success(c, {{VariableName}}Model)
+    } else {
+        response.Fail(c, 1001, "创建失败，请稍后尝试~", nil)
+    }
+}
+
+func Update(c *gin.Context) {
+
+    {{VariableName}}Model := {{PackageName}}.Get(c.Param("id"))
+    if {{VariableName}}Model.ID == 0 {
+        response.Fail(c, 1001, "创建失败，请稍后尝试~",nil)
+        return
+    }
+
+    if ok := policies.CanModify{{StructName}}(c, {{VariableName}}Model); !ok {
+        response.Fail(c, 1002, "没有权限", nil)
+        return
+    }
+
+    request := requests.{{StructName}}Request{}
+    bindOk, errs := requests.Validate(c, &request, requests.{{StructName}}Save)
+    if !bindOk {
+        return
+    }
+    if len(errs) > 0 {
+        response.Fail(c, 1003, errs.Error(), nil)
+        return
+    }
+
+    {{VariableName}}Model.FieldName = request.FieldName
+
+    rowsAffected := {{VariableName}}Model.Save()
+    if rowsAffected > 0 {
+        response.Success(c, {{VariableName}}Model)
+    } else {
+        response.Fail(c, 1004, "更新失败，请稍后尝试~",nil)
+    }
+}
+
+func Delete(c *gin.Context) {
+
+    {{VariableName}}Model := {{PackageName}}.Get(c.Param("id"))
+    if {{VariableName}}Model.ID == 0 {
+        response.Fail(c, 1001, "记录不存在",nil)
+        return
+    }
+
+    if ok := policies.CanModify{{StructName}}(c, {{VariableName}}Model); !ok {
+       response.Fail(c, 1002, "没有权限",nil)
+        return
+    }
+
+    rowsAffected := {{VariableName}}Model.Delete()
+
+    if rowsAffected > 0 {
+        response.Success(c,nil)
+        return
+    }
+
+    response.Fail(c, 1003,  "删除失败，请稍后尝试~", nil)
+}
