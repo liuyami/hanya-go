@@ -1,10 +1,13 @@
 package user
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"hanya-go/app/models"
+	"hanya-go/pkg/app"
 	"hanya-go/pkg/database"
 	"hanya-go/pkg/hash"
+	"hanya-go/pkg/paginator"
 )
 
 type User struct {
@@ -83,5 +86,21 @@ func (userModel *User) Save() (rowsAffected int64) {
 // All 获取所有用户
 func All() (users []User) {
 	database.DB.Find(&users)
+	return
+}
+
+// Paginate 页面获取
+func Paginate(c *gin.Context, perPage int, sort, order string) (users []User, paging paginator.Paging) {
+
+	paging = paginator.Paginate(
+		c,
+		database.DB.Model(User{}),
+		&users,
+		app.URL("/api/users"),
+		perPage,
+		sort,
+		order,
+	)
+
 	return
 }

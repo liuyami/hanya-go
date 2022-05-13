@@ -2,6 +2,7 @@ package api
 
 import (
 	"hanya-go/app/models/user"
+	"hanya-go/app/requests"
 	"hanya-go/app/response"
 	"hanya-go/pkg/auth"
 
@@ -14,7 +15,20 @@ func CurrentUser(c *gin.Context) {
 }
 
 func Index(c *gin.Context) {
-	data := user.All()
 
-	response.Success(c, data)
+	request := requests.UserIndexRequest{}
+
+	if ok := requests.Validate(c, &request, requests.UserIndexFun); !ok {
+		return
+	}
+
+	sort := c.DefaultQuery("sort", "user_id")
+	order := c.DefaultQuery("order", "desc")
+
+	data, pager := user.Paginate(c, 3, sort, order)
+
+	response.Success(c, gin.H{
+		"list":  data,
+		"pager": pager,
+	})
 }

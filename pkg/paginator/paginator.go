@@ -54,12 +54,14 @@ type Paginator struct {
 //             app.APIURL(database.TableName(&Topic{})),
 //             perPage,
 //         )
-func Paginate(c *gin.Context, db *gorm.DB, data interface{}, baseURL string, perPage int) Paging {
+func Paginate(c *gin.Context, db *gorm.DB, data interface{}, baseURL string, perPage int, sort, order string) Paging {
 
 	// 初始化 Paginator 实例
 	p := &Paginator{
 		query: db,
 		ctx:   c,
+		Sort:  sort,
+		Order: order,
 	}
 	p.initProperties(perPage, baseURL)
 
@@ -94,8 +96,8 @@ func (p *Paginator) initProperties(perPage int, baseURL string) {
 	p.PerPage = p.getPerPage(perPage)
 
 	// 排序参数（控制器中以验证过这些参数，可放心使用）
-	p.Order = p.ctx.DefaultQuery(config.Get("paging.url_query_order"), "asc")
-	p.Sort = p.ctx.DefaultQuery(config.Get("paging.url_query_sort"), "id")
+	//p.Order = p.ctx.DefaultQuery(config.Get("paging.url_query_order"), "asc")
+	//p.Sort = p.ctx.DefaultQuery(config.Get("paging.url_query_sort"), "created_at")
 
 	p.TotalCount = p.getTotalCount()
 	p.TotalPage = p.getTotalPage()
