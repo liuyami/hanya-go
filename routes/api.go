@@ -1,16 +1,19 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
+	"hanya-go/app/controllers/api"
 	"hanya-go/app/controllers/api/auth"
 	"hanya-go/app/middlewares"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 func RegisterAPIRoutes(r *gin.Engine) {
 
 	apiGroup := r.Group("/api")
+
+	apiGroup.GET("/user", middlewares.AuthJWT(), api.CurrentUser)
+
 	apiGroup.Use(middlewares.LimitIP("200-H"))
 	{
 		apiGroup.GET("/ping", func(ctx *gin.Context) {
@@ -19,6 +22,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			})
 		})
 
+		// 账号相关
 		userAuthGroup := apiGroup.Group("/auth")
 		{
 			//suc := new(auth.Signup)
@@ -44,6 +48,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			userAuthGroup.POST("/password-reset/using-phone", middlewares.GuestJWT(), auth.ResetPasswordByPhone)
 			userAuthGroup.POST("/password-reset/using-email", middlewares.GuestJWT(), auth.ResetPasswordByEmail)
 		}
+
 	}
 
 }
