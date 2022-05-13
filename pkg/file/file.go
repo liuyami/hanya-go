@@ -3,8 +3,12 @@
 package file
 
 import (
+	"hanya-go/pkg/helpers"
 	"io/ioutil"
+	"mime/multipart"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 // Put 将数据存入文件
@@ -25,4 +29,14 @@ func Exists(fileToCheck string) bool {
 	}
 
 	return true
+}
+
+// FileNameWithoutExtension 去掉一个文件的后缀名并返回文件名
+func FileNameWithoutExtension(fileName string) string {
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
+}
+
+// randomNameFromUploadFile 生成随机文件名
+func randomNameFromUploadFile(file *multipart.FileHeader) string {
+	return helpers.RandomString(16) + filepath.Ext(file.Filename)
 }
