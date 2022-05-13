@@ -4,6 +4,10 @@ package {{PackageName}}
 import (
     "hanya-go/app/models"
     "hanya-go/pkg/database"
+    "hanya-go/pkg/paginator"
+    "hanya-go/pkg/app"
+
+    "github.com/gin-gonic/gin"
 )
 
 type {{StructName}} struct {
@@ -31,4 +35,20 @@ func ({{VariableName}} *{{StructName}}) Save() (rowsAffected int64) {
 func ({{VariableName}} *{{StructName}}) Delete() (rowsAffected int64) {
     result := database.DB.Delete(&{{VariableName}})
     return result.RowsAffected
+}
+
+// Paginate 页面获取
+func Paginate(c *gin.Context, perPage int, sort, order string) ({{VariableNamePlural}} []{{StructName}}, paging paginator.Paging) {
+
+	paging = paginator.Paginate(
+		c,
+		database.DB.Model({{StructName}}{}),
+		&{{VariableNamePlural}},
+		app.URL("/api/{{TableName}}"),
+		perPage,
+		sort,
+		order,
+	)
+
+	return
 }
