@@ -13,11 +13,11 @@ func init() {
     type User struct {
         UserID uint `gorm:"column:user_id;primaryKey;autoIncrement;type:int(10)" json:"user_id,omitempty"`
 
-        Nickname string `gorm:"column:nickname;type:varchar(128)" json:"nickname,omitempty"`
+        Nickname string `gorm:"column:nickname;index;type:varchar(128)" json:"nickname,omitempty"`
         Avatar   string `gorm:"column:avatar;type:varchar(256)" json:"avatar,omitempty"`
-        Openid   string `gorm:"column:openid;uniqueIndex;type:varchar(128)" json:"openid,omitempty"`
-        Email    string `gorm:"uniqueIndex;type:varchar(128)" json:"-"`
-        Phone    string `gorm:"uniqueIndex;type:char(11)" json:"-"`
+        Openid   string `gorm:"column:openid;index;type:varchar(128)" json:"openid,omitempty"`
+        Email    string `gorm:"index;type:varchar(128)" json:"-"`
+        Phone    string `gorm:"index;type:char(11)" json:"-"`
         Password string `gorm:"type:varchar(256)" json:"-"`
 
         models.Datetime
