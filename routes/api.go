@@ -22,31 +22,36 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			})
 		})
 
+		userGroup := apiGroup.Group("/users")
+		{
+			userGroup.GET("", api.Index)
+		}
+
 		// 账号相关
-		userAuthGroup := apiGroup.Group("/auth")
+		authGroup := apiGroup.Group("/auth")
 		{
 			//suc := new(auth.Signup)
 			//检测是否存在
-			userAuthGroup.POST("/signup/phone/exist", middlewares.GuestJWT(), auth.IsPhoneExist)
-			userAuthGroup.POST("/signup/email/exist", middlewares.GuestJWT(), auth.IsEmailExist)
+			authGroup.POST("/signup/phone/exist", middlewares.GuestJWT(), auth.IsPhoneExist)
+			authGroup.POST("/signup/email/exist", middlewares.GuestJWT(), auth.IsEmailExist)
 			//注册
-			userAuthGroup.POST("/signup/using-phone", middlewares.GuestJWT(), auth.SignupUsingPhone)
-			userAuthGroup.POST("/signup/using-email", middlewares.GuestJWT(), auth.SignupUsingEmail)
+			authGroup.POST("/signup/using-phone", middlewares.GuestJWT(), auth.SignupUsingPhone)
+			authGroup.POST("/signup/using-email", middlewares.GuestJWT(), auth.SignupUsingEmail)
 
 			// 图片验证码
-			userAuthGroup.GET("/verify-codes/captcha", middlewares.GuestJWT(), auth.GetCaptcha)
+			authGroup.GET("/verify-codes/captcha", middlewares.GuestJWT(), auth.GetCaptcha)
 			// 发送短信验证码
-			userAuthGroup.POST("/verify-codes/phone", middlewares.LimitPerRoute("20-H"), auth.SendUsingPhone)
-			userAuthGroup.POST("/verify-codes/email", middlewares.LimitPerRoute("20-H"), auth.SendUsingEmail)
+			authGroup.POST("/verify-codes/phone", middlewares.LimitPerRoute("20-H"), auth.SendUsingPhone)
+			authGroup.POST("/verify-codes/email", middlewares.LimitPerRoute("20-H"), auth.SendUsingEmail)
 
 			// 登录
-			userAuthGroup.POST("/login/using-phone", middlewares.GuestJWT(), auth.LoginByPhone)
-			userAuthGroup.POST("/login/using-password", middlewares.GuestJWT(), auth.LoginByPassword)
-			userAuthGroup.POST("/login/refresh-token", middlewares.AuthJWT(), auth.RefreshToken)
+			authGroup.POST("/login/using-phone", middlewares.GuestJWT(), auth.LoginByPhone)
+			authGroup.POST("/login/using-password", middlewares.GuestJWT(), auth.LoginByPassword)
+			authGroup.POST("/login/refresh-token", middlewares.AuthJWT(), auth.RefreshToken)
 
 			// 重置密码
-			userAuthGroup.POST("/password-reset/using-phone", middlewares.GuestJWT(), auth.ResetPasswordByPhone)
-			userAuthGroup.POST("/password-reset/using-email", middlewares.GuestJWT(), auth.ResetPasswordByEmail)
+			authGroup.POST("/password-reset/using-phone", middlewares.GuestJWT(), auth.ResetPasswordByPhone)
+			authGroup.POST("/password-reset/using-email", middlewares.GuestJWT(), auth.ResetPasswordByEmail)
 		}
 
 	}
