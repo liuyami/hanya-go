@@ -24,11 +24,11 @@ func init() {
     }
 
     up := func(migrator gorm.Migrator, DB *sql.DB) {
-        _ = migrator.AutoMigrate(&User{})
+        _ = migrator.AutoMigrate(&{{VariableNamePlural}}.{{StructName}}{})
     }
 
     down := func(migrator gorm.Migrator, DB *sql.DB) {
-        _ = migrator.DropTable(&User{})
+        _ = migrator.DropTable(&{{VariableNamePlural}}.{{StructName}}{})
     }
 
     migrate.Add("{{FileName}}", up, down)

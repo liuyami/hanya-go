@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"hanya-go/app/controllers/api"
 	"hanya-go/app/controllers/api/auth"
+	"hanya-go/app/controllers/api/category"
 	"hanya-go/app/middlewares"
 	"net/http"
 )
@@ -22,9 +23,16 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			})
 		})
 
+		// 用户
 		userGroup := apiGroup.Group("/users")
 		{
 			userGroup.GET("", api.Index)
+		}
+
+		// 分类
+		categoryGroup := apiGroup.Group("/categories")
+		{
+			categoryGroup.POST("", middlewares.AuthJWT(), category.Store)
 		}
 
 		// 账号相关
