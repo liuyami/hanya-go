@@ -72,3 +72,20 @@ func Update(c *gin.Context) {
 		response.Fail(c, 1002, "更新失败", nil)
 	}
 }
+
+func Delete(c *gin.Context) {
+	categoryModel := category.Get(c.Param("category_id"))
+
+	if categoryModel.CategoryID == 0 {
+		response.Fail(c, 1001, "数据不存在或已被删除", nil)
+		return
+	}
+
+	rowsAffected := categoryModel.Delete()
+	if rowsAffected > 0 {
+		response.Success(c, "删除成功")
+		return
+	}
+
+	response.Fail(c, 1002, "删除失败", nil)
+}

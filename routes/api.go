@@ -34,7 +34,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			categoryGroup.GET("", category.Index)
 			categoryGroup.POST("", middlewares.AuthJWT(), category.Store)
-			categoryGroup.POST("/:category_id", middlewares.AuthJWT(), category.Update)
+			categoryGroup.PUT("/:category_id", middlewares.AuthJWT(), category.Update)
+			categoryGroup.DELETE("/:category_id", middlewares.AuthJWT(), category.Delete)
 		}
 
 		// 账号相关
