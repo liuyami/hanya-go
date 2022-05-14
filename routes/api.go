@@ -32,6 +32,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		// 分类
 		categoryGroup := apiGroup.Group("/categories")
 		{
+			categoryGroup.GET("", category.Index)
 			categoryGroup.POST("", middlewares.AuthJWT(), category.Store)
 			categoryGroup.POST("/:category_id", middlewares.AuthJWT(), category.Update)
 		}

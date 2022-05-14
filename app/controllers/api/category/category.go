@@ -8,6 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Index(c *gin.Context) {
+	request := requests.CategoryIndexRequest{}
+	if ok := requests.Validate(c, &request, requests.CategoryIndexFun); !ok {
+		return
+	}
+
+	sort := c.DefaultQuery("sort", "category_id")
+	order := c.DefaultQuery("order", "desc")
+
+	data, pager := category.Paginate(c, 3, sort, order, "/api/categories")
+
+	response.Success(c, gin.H{
+		"list":  data,
+		"pager": pager,
+	})
+}
+
 func Store(c *gin.Context) {
 
 	request := requests.CategoryRequest{}

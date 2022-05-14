@@ -38,13 +38,13 @@ func (category *Category) Delete() (rowsAffected int64) {
 }
 
 // Paginate 页面获取
-func Paginate(c *gin.Context, perPage int, sort, order string) (category []Category, paging paginator.Paging) {
+func Paginate(c *gin.Context, perPage int, sort, order, uri string) (category []Category, paging paginator.Paging) {
 
 	paging = paginator.Paginate(
 		c,
 		database.DB.Model(Category{}),
 		&category,
-		app.URL("/api/category"),
+		app.URL(uri),
 		perPage,
 		sort,
 		order,
