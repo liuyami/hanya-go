@@ -33,6 +33,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		categoryGroup := apiGroup.Group("/categories")
 		{
 			categoryGroup.POST("", middlewares.AuthJWT(), category.Store)
+			categoryGroup.POST("/:category_id", middlewares.AuthJWT(), category.Update)
 		}
 
 		// 账号相关
