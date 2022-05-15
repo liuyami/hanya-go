@@ -11,7 +11,7 @@ import (
 )
 
 type Category struct {
-	CategoryID uint `gorm:"column:category_id;primaryKey;autoIncrement;type:int(10)" json:"category_id,omitempty"`
+	CategoryID uint64 `gorm:"column:category_id;primaryKey;autoIncrement;type:int(10)" json:"category_id,omitempty"`
 
 	Name string `json:"name,omitempty"`
 	Desc string `json:"desc,omitempty"`

@@ -13,12 +13,12 @@ import (
 )
 
 type Topic struct {
-	TopicID uint `gorm:"column:topic_id;primaryKey;autoIncrement;type:int(10)" json:"topic_id,omitempty"`
+	TopicID uint64 `gorm:"column:topic_id;primaryKey;autoIncrement;type:int(10)" json:"topic_id,omitempty"`
 
 	Title      string `json:"title,omitempty" `
 	Body       string `json:"body,omitempty" `
-	UserID     uint   `json:"user_id,omitempty"`
-	CategoryID uint   `json:"category_id,omitempty"`
+	UserID     uint64 `json:"user_id,omitempty"`
+	CategoryID uint64 `json:"category_id,omitempty"`
 
 	// 通过 user_id 关联用户
 	User user.User `json:"user"`

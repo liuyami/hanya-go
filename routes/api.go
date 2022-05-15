@@ -5,6 +5,7 @@ import (
 	"hanya-go/app/controllers/api"
 	"hanya-go/app/controllers/api/auth"
 	"hanya-go/app/controllers/api/category"
+	"hanya-go/app/controllers/api/topic"
 	"hanya-go/app/middlewares"
 	"net/http"
 )
@@ -36,6 +37,13 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			categoryGroup.POST("", middlewares.AuthJWT(), category.Store)
 			categoryGroup.PUT("/:category_id", middlewares.AuthJWT(), category.Update)
 			categoryGroup.DELETE("/:category_id", middlewares.AuthJWT(), category.Delete)
+		}
+
+		// 话题
+		topicGroup := apiGroup.Group("/topic")
+		{
+			topicGroup.GET("", topic.Index)
+			topicGroup.POST("", middlewares.AuthJWT(), topic.Store)
 		}
 
 		// 账号相关

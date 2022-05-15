@@ -13,7 +13,7 @@ import (
 type User struct {
 	// models.ID
 
-	UserID uint `gorm:"column:user_id;primaryKey;autoIncrement;type:int(10)" json:"user_id,omitempty"`
+	UserID uint64 `gorm:"column:user_id;primaryKey;autoIncrement;type:int(10)" json:"user_id,omitempty"`
 
 	Nickname string `gorm:"column:nickname;type:varchar(128)" json:"nickname,omitempty"`
 	Avatar   string `gorm:"column:avatar;type:varchar(256)" json:"avatar,omitempty"`
@@ -41,6 +41,11 @@ func (userModel *User) ComparePassword(_password string) bool {
 // GetStringID 获取 User ID 的字符串格式
 func (userModel *User) GetStringID() string {
 	return cast.ToString(userModel.UserID)
+}
+
+// GetUserID  获取 User ID 的字符串格式
+func (userModel *User) GetUserID() uint64 {
+	return userModel.UserID
 }
 
 // GetById 通过邮件地址来获取用户

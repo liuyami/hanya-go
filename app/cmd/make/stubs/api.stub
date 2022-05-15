@@ -1,4 +1,4 @@
-package api
+package {{VariableName}}
 
 import (
 	"hanya-go/app/models/{{PackageName}}"
