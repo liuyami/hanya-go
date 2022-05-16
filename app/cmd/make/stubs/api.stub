@@ -2,7 +2,7 @@ package {{VariableName}}
 
 import (
 	"hanya-go/app/models/{{PackageName}}"
-	"hanya-go/app/policies"
+	"hanya-go/app/policy"
 	"hanya-go/app/requests"
 	"hanya-go/app/response"
 
