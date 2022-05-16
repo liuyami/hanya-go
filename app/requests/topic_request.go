@@ -18,6 +18,7 @@ func TopicSave(data interface{}, c *gin.Context) map[string][]string {
 		"body":        []string{"required", "min_cn:10", "max_cn:50000"},
 		"category_id": []string{"required", "exists:category,category_id"},
 	}
+	
 	messages := govalidator.MapData{
 		"title": []string{
 			"required:帖子标题为必填项",
