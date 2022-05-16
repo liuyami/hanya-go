@@ -47,3 +47,26 @@ func Store(c *gin.Context) {
 		response.Fail(c, 1001, "创建失败，请稍后尝试~", nil)
 	}
 }
+
+func Update(c *gin.Context) {
+	topicModel := topic.Get(c.Param("topic_id"))
+	if topicModel.TopicID == 0 {
+		response.Fail(c, 1001, "记录没找到", nil)
+		return
+	}
+
+	request := requests.TopicRequest{}
+	if ok := requests.Validate(c, &request, requests.TopicSave); !ok {
+		return
+	}
+
+	topicModel.Title = request.Title
+	topicModel.Body = request.Body
+	topicModel.CategoryID = request.CategoryID
+	rowsAffected := topicModel.Save()
+	if rowsAffected > 0 {
+		response.Success(c, topicModel)
+	} else {
+		response.Fail(c, 1002, "更新失败，请稍后尝试~", nil)
+	}
+}

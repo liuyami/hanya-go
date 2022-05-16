@@ -44,6 +44,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			topicGroup.GET("", topic.Index)
 			topicGroup.POST("", middlewares.AuthJWT(), topic.Store)
+			topicGroup.PUT("/:topic_id", middlewares.AuthJWT(), topic.Update)
 		}
 
 		// 账号相关
