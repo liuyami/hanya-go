@@ -8,6 +8,6 @@ import (
 )
 
 func Index(c *gin.Context) {
-	link := link.All()
+	link := link.AllCached()
 	response.Success(c, link)
 }
