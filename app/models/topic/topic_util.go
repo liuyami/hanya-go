@@ -1,11 +1,12 @@
 package topic
 
 import (
+	"gorm.io/gorm/clause"
 	"hanya-go/pkg/database"
 )
 
 func Get(idStr string) (topic Topic) {
-	database.DB.Where("topic_id", idStr).First(&topic)
+	database.DB.Preload(clause.Associations).Where("topic_id", idStr).First(&topic)
 	return
 }
 

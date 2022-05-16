@@ -26,6 +26,15 @@ func Index(c *gin.Context) {
 	})
 }
 
+func Show(c *gin.Context) {
+	topicModel := topic.Get(c.Param("topic_id"))
+	if topicModel.TopicID == 0 {
+		response.App(c, 404, "记录不存在")
+		return
+	}
+	response.Success(c, topicModel)
+}
+
 func Store(c *gin.Context) {
 
 	request := requests.TopicRequest{}

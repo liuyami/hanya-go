@@ -43,6 +43,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		topicGroup := apiGroup.Group("/topic")
 		{
 			topicGroup.GET("", topic.Index)
+			topicGroup.GET("/:topic_id", topic.Show)
 			topicGroup.POST("", middlewares.AuthJWT(), topic.Store)
 			topicGroup.PUT("/:topic_id", middlewares.AuthJWT(), topic.Update)
 			topicGroup.POST("/:topic_id", middlewares.AuthJWT(), topic.Delete)
