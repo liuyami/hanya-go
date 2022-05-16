@@ -3,6 +3,7 @@ package topic
 import (
 	"github.com/gin-gonic/gin"
 	"hanya-go/app/models/topic"
+	"hanya-go/app/policy"
 	"hanya-go/app/requests"
 	"hanya-go/app/response"
 	"hanya-go/pkg/auth"
@@ -52,6 +53,11 @@ func Update(c *gin.Context) {
 	topicModel := topic.Get(c.Param("topic_id"))
 	if topicModel.TopicID == 0 {
 		response.Fail(c, 1001, "记录没找到", nil)
+		return
+	}
+
+	if ok := policy.CanModifyTopic(c, topicModel); !ok {
+		response.App(c, 403, "没有权限")
 		return
 	}
 
