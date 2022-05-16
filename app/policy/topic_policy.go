@@ -6,6 +6,6 @@ import (
 	"hanya-go/pkg/auth"
 )
 
-func CanModifyTopic(c *gin.Context, _topic topic.Topic) bool {
+func TopicAuthCheck(c *gin.Context, _topic topic.Topic) bool {
 	return auth.CurrentUserId(c) == _topic.UserID
 }
