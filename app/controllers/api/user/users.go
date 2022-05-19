@@ -5,6 +5,8 @@ import (
 	"hanya-go/app/requests"
 	"hanya-go/app/response"
 	"hanya-go/pkg/auth"
+	"hanya-go/pkg/config"
+	"hanya-go/pkg/file"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,4 +51,23 @@ func UpdateProfile(c *gin.Context) {
 	} else {
 		response.Fail(c, 1001, "更新失败，请稍后再试", nil)
 	}
+}
+
+func UpdateAvatar(c *gin.Context) {
+	request := requests.UserUpdateAvatarRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateAvatarHandle); !ok {
+		return
+	}
+
+	// 保存图片
+	avatar, err := file.SaveUploadAvatar(c, request.Avatar)
+	if err != nil {
+		response.Fail(c, 1001, "上传失败，请稍后再试试", nil)
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Avatar = config.GetString("app.url") + avatar
+	currentUser.Save()
+
+	response.Success(c, currentUser)
 }

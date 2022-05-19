@@ -3,10 +3,11 @@
 package file
 
 import (
-	"hanya-go/pkg/helpers"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 )
@@ -36,7 +37,21 @@ func FileNameWithoutExtension(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
-// randomNameFromUploadFile 生成随机文件名
-func randomNameFromUploadFile(file *multipart.FileHeader) string {
-	return helpers.RandomString(16) + filepath.Ext(file.Filename)
+func SaveUploadAvatar(c *gin.Context, file *multipart.FileHeader) (string, error) {
+	var avatar string
+
+	avatarSavePath := "public/upload/avatar/"
+
+	// 保存文件
+	// fileName := auth.CurrentUID(c) + path.Ext(file.Filename)
+	fileName := "1" + path.Ext(file.Filename)
+
+	// public/uploads/avatars/2.png
+	avatarPath := avatarSavePath + fileName
+
+	if err := c.SaveUploadedFile(file, avatarPath); err != nil {
+		return avatar, err
+	}
+
+	return avatarPath, nil
 }

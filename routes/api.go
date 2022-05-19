@@ -30,6 +30,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			userGroup.GET("", user.Index)
 			userGroup.PUT("", middlewares.AuthJWT(), user.UpdateProfile)
+			userGroup.POST("/avatar", middlewares.AuthJWT(), user.UpdateAvatar)
 		}
 
 		// 分类
