@@ -2,11 +2,11 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"hanya-go/app/controllers/api"
 	"hanya-go/app/controllers/api/auth"
 	"hanya-go/app/controllers/api/category"
 	"hanya-go/app/controllers/api/link"
 	"hanya-go/app/controllers/api/topic"
+	"hanya-go/app/controllers/api/user"
 	"hanya-go/app/middlewares"
 	"net/http"
 )
@@ -15,7 +15,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 	apiGroup := r.Group("/api")
 
-	apiGroup.GET("/user", middlewares.AuthJWT(), api.CurrentUser)
+	apiGroup.GET("/user", middlewares.AuthJWT(), user.CurrentUser)
 
 	apiGroup.Use(middlewares.LimitIP("200-H"))
 	{
@@ -28,7 +28,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		// 用户
 		userGroup := apiGroup.Group("/users")
 		{
-			userGroup.GET("", api.Index)
+			userGroup.GET("", user.Index)
+			userGroup.PUT("", middlewares.AuthJWT(), user.UpdateProfile)
 		}
 
 		// 分类

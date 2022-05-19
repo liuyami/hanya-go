@@ -1,4 +1,4 @@
-package api
+package user
 
 import (
 	"hanya-go/app/models/user"
@@ -31,4 +31,23 @@ func Index(c *gin.Context) {
 		"list":  data,
 		"pager": pager,
 	})
+}
+
+func UpdateProfile(c *gin.Context) {
+	req := requests.UserUpdateProfileRequest{}
+
+	if ok := requests.Validate(c, &req, requests.UserUpdateProfileRequestFun); !ok {
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Nickname = req.Nickname
+	currentUser.Avatar = req.Avatar
+	rowsAffected := currentUser.Save()
+
+	if rowsAffected > 0 {
+		response.Success(c, nil)
+	} else {
+		response.Fail(c, 1001, "更新失败，请稍后再试", nil)
+	}
 }
