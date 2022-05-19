@@ -42,7 +42,6 @@ func UpdateProfile(c *gin.Context) {
 
 	currentUser := auth.CurrentUser(c)
 	currentUser.Nickname = req.Nickname
-	currentUser.Avatar = req.Avatar
 	rowsAffected := currentUser.Save()
 
 	if rowsAffected > 0 {

@@ -36,22 +36,17 @@ func UserIndexFun(data interface{}, c *gin.Context) map[string][]string {
 
 type UserUpdateProfileRequest struct {
 	Nickname string `valid:"nickname" json:"nickname"`
-	Avatar   string `valid:"avatar" json:"avatar"`
 }
 
 func UserUpdateProfileRequestFun(data interface{}, c *gin.Context) map[string][]string {
 
 	rules := govalidator.MapData{
 		"nickname": []string{"required"},
-		"avatar":   []string{"required"},
 	}
 
 	messages := govalidator.MapData{
 		"nickname": []string{
 			"required:昵称必须填写",
-		},
-		"avatar": []string{
-			"required:必须有头像",
 		},
 	}
 
